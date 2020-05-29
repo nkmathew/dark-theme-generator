@@ -15,12 +15,12 @@
     }
   ],
   "icons": {
-    "16": "images/icon.png",
-    "48": "images/icon.png",
-    "128": "images/icon.png"
+    "16": "images/icon1.png",
+    "48": "images/icon1.png",
+    "128": "images/icon1.png"
   },
   "browser_action": {
-    "default_icon": "images/icon.png"
+    "default_icon": "images/icon1.png"
   },
   "permissions": [
     "notifications",
