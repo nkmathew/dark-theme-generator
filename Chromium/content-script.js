@@ -35,7 +35,7 @@ function darkTheme() {
       node.style.borderColor = '#666';
       node.style.borderRadius = '5px';
     } else if (['strong', 'b', 'em'].includes(tagname)) {
-      node.style.color = 'rgba(255, 228, 196, 0.76)';
+      node.style.color = '#ffe4c4c2';
       node.style.fontFamily = 'Roboto';
     }
   });
