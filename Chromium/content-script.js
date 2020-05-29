@@ -25,16 +25,21 @@ function darkTheme() {
     back = getStyle(node, 'background-color');
     node.style.backgroundColor = '#191919';
     node.style.color = 'rgb(209, 209, 209, 0.90)';
-    let tagname = node.tagName.toLowerCase();
-    if (tagname == 'p') {
+    let tag = node.tagName.toLowerCase() || '';
+    let ptag = node.parentNode.tagName;
+    ptag = ptag ? ptag.toLowerCase() : '';
+    let biglink =
+      (tag.startsWith('h') && ptag == 'a') ||
+      (tag == 'a' && ptag.startsWith('h'));
+    if (tag == 'p') {
       node.style.fontFamily = '"Segoe UI", Arial, san-serif';
       node.style.fontSize = '16px';
-    } else if (tagname == 'a') {
+    } else if (tag == 'a' || biglink) {
       node.style.color = '#4db2ec';
-    } else if (tagname == 'input') {
+    } else if (tag == 'input') {
       node.style.borderColor = '#666';
       node.style.borderRadius = '5px';
-    } else if (['strong', 'b', 'em'].includes(tagname)) {
+    } else if (['strong', 'b', 'em'].includes(tag)) {
       node.style.color = '#ffe4c4c2';
       node.style.fontFamily = 'Roboto';
     }
