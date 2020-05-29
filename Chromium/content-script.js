@@ -25,14 +25,18 @@ function darkTheme() {
     back = getStyle(node, 'background-color');
     node.style.backgroundColor = '#191919';
     node.style.color = 'rgb(209, 209, 209, 0.90)';
-    if (node.tagName == 'P') {
+    let tagname = node.tagName.toLowerCase();
+    if (tagname == 'p') {
       node.style.fontFamily = '"Segoe UI", Arial, san-serif';
       node.style.fontSize = '16px';
-    } else if (node.tagName == 'A') {
+    } else if (tagname == 'a') {
       node.style.color = '#4db2ec';
-    } else if (node.tagName == 'INPUT') {
+    } else if (tagname == 'input') {
       node.style.borderColor = '#666';
       node.style.borderRadius = '5px';
+    } else if (['strong', 'b', 'em'].includes(tagname)) {
+      node.style.color = 'rgba(255, 228, 196, 0.76)';
+      node.style.fontFamily = 'Roboto';
     }
   });
   console.log('Done themeing...');
