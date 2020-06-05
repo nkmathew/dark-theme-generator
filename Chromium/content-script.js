@@ -1,6 +1,6 @@
 chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
   if (request.action == 'go-dark') {
-    darkTheme();
+    makePageDark();
   } else if (request.action == 'generate-theme') {
     generateTheme();
   }
@@ -21,7 +21,7 @@ let getStyle = function (element, property) {
       ];
 };
 
-function darkTheme() {
+function makePageDark() {
   [...document.getElementsByTagName('*')].forEach((node) => {
     let tag = node.tagName.toLowerCase() || '';
     let ptag = node.parentNode.tagName;
@@ -57,6 +57,7 @@ function darkTheme() {
     }
     node.style.borderColor = '#555';
     node.style.borderRadius = '5px';
+    node.style.boxShadow = 'none';
   });
   console.log('Done themeing...');
 }
