@@ -96,6 +96,50 @@ function joinSelectors(res) {
   return res.join(',\n');
 }
 
+ROOT = `
+
+:root {
+
+  --bg-card      : #343A40;
+  --bg-pre       : #2A3340;
+  --bg-quote     : #2B29298C;
+  --blue         : #1A73E8;
+  --bold         : #F2D297;
+  --bold-1       : #FFE4C4C2;
+  --border       : #555555;
+  --border-1     : #616161;
+  --border-2     : #FFFFFF1A;
+  --border-3     : #333333;
+  --border-quote : #565680;
+  --btn-like     : #EF5466;
+  --btn-shadow   : 0 0 5px #0F0F0F;
+  --fg           : #CCCCCC;
+  --fg-1         : #FFFFFF;
+  --fg-2         : #F5DEB3;
+  --fg-3         : #B3B3B3;
+  --fg-input     : #FFFFFFE0;
+  --gray         : #191919;
+  --gray-1       : #000000;
+  --gray-2       : #121212;
+  --gray-3       : #222222;
+  --gray-4       : #262626;
+  --gray-5       : #2E2E2E;
+  --gray-6       : #23232D;
+  --gray-7       : #42424C;
+  --gray-alt     : #121212;
+  --green        : #228822;
+  --pink         : #FFDEAD;
+  --header       : #BDB76B;
+  --header-1     : #FF9800DE;
+  --hover        : #CDDC39;
+  --link         : #4DB2EC;
+  --link-1       : #00BCD4;
+  --link-2       : #ADD8E6;
+
+}
+
+`;
+
 CSS = `
 
 {
@@ -154,7 +198,9 @@ hr {
   background: var(--border1) !important;
 }
 
-em, bold, strong {
+em,
+bold,
+strong {
   color: #F2D297;
   font-weight: normal;
 }
@@ -178,6 +224,7 @@ function copyText(text) {
   input.style.marginLeft = '35%';
   input.style.width = '500px';
   input.style.height = '500px';
+  input.style.zIndex = '1e9';
   input.value = text;
   setTimeout(() => {
     input.select();
@@ -191,7 +238,7 @@ function copyText(text) {
 }
 
 function generateTheme() {
-  res = [
+  rules = [
     'body',
     'html',
     'div',
@@ -212,10 +259,8 @@ function generateTheme() {
     'tr',
     'td',
   ];
-  res = res.concat(definedProperties());
-  res = definedProperties();
-  res = joinSelectors(res);
-  res += CSS;
-  console.log(res);
-  copyText(res);
+  rules = joinSelectors(rules.concat(definedProperties()));
+  rules = `${ROOT}${rules}${CSS}`;
+  console.log(rules);
+  copyText(rules);
 }
