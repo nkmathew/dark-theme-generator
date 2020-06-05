@@ -15,17 +15,22 @@ let getStyle = function (element, property) {
   return window.getComputedStyle
     ? window.getComputedStyle(element, null).getPropertyValue(property)
     : element.style[
-      property.replace(/-([a-z])/g, function (g) {
-        return g[1].toUpperCase();
-      })
-    ];
+        property.replace(/-([a-z])/g, function (g) {
+          return g[1].toUpperCase();
+        })
+      ];
 };
 
 function darkTheme() {
   [...document.getElementsByTagName('*')].forEach((node) => {
     let tag = node.tagName.toLowerCase() || '';
     let ptag = node.parentNode.tagName;
+    let pptag = null;
+    if (node.parentNode && node.parentNode.parentNode) {
+      pptag = node.parentNode.parentNode.tagName;
+    }
     ptag = ptag ? ptag.toLowerCase() : '';
+    pptag = pptag ? pptag.toLowerCase() : '';
     let biglink =
       (tag.startsWith('h') && ptag == 'a') ||
       (tag == 'a' && ptag.startsWith('h'));
@@ -37,10 +42,11 @@ function darkTheme() {
       node.style.fontFamily = '"Segoe UI", Arial, san-serif';
       node.style.fontSize = '16px';
       node.style.lineHeight = '28px';
-    } else if (tag == 'a' || biglink) {
+    } else if (tag == 'a' || biglink || pptag == 'a' || ptag == 'a') {
       node.style.fontFamily = 'Arial';
       node.style.color = '#4db2ec';
       node.style.boxShadow = 'none';
+      node.style.textDecoration = 'none';
     } else if (tag == 'input') {
       node.style.borderRadius = '5px';
     } else if (['strong', 'b', 'em'].includes(tag)) {
