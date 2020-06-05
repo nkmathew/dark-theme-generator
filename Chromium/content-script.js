@@ -11,38 +11,46 @@ chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
 const dqs = (selector) => document.querySelector(selector);
 const dqsa = (selector) => document.querySelectorAll(selector);
 
+let getStyle = function (element, property) {
+  return window.getComputedStyle
+    ? window.getComputedStyle(element, null).getPropertyValue(property)
+    : element.style[
+      property.replace(/-([a-z])/g, function (g) {
+        return g[1].toUpperCase();
+      })
+    ];
+};
+
 function darkTheme() {
-  var getStyle = function (element, property) {
-    return window.getComputedStyle
-      ? window.getComputedStyle(element, null).getPropertyValue(property)
-      : element.style[
-          property.replace(/-([a-z])/g, function (g) {
-            return g[1].toUpperCase();
-          })
-        ];
-  };
   [...document.getElementsByTagName('*')].forEach((node) => {
-    back = getStyle(node, 'background-color');
-    node.style.backgroundColor = '#191919';
-    node.style.color = 'rgb(209, 209, 209, 0.90)';
     let tag = node.tagName.toLowerCase() || '';
     let ptag = node.parentNode.tagName;
     ptag = ptag ? ptag.toLowerCase() : '';
     let biglink =
       (tag.startsWith('h') && ptag == 'a') ||
       (tag == 'a' && ptag.startsWith('h'));
+    if (tag != 'video') {
+      node.style.backgroundColor = '#191919';
+      node.style.color = '#d1d1d1e6';
+    }
     if (tag == 'p') {
       node.style.fontFamily = '"Segoe UI", Arial, san-serif';
       node.style.fontSize = '16px';
+      node.style.lineHeight = '28px';
     } else if (tag == 'a' || biglink) {
+      node.style.fontFamily = 'Arial';
       node.style.color = '#4db2ec';
+      node.style.boxShadow = 'none';
     } else if (tag == 'input') {
-      node.style.borderColor = '#666';
       node.style.borderRadius = '5px';
     } else if (['strong', 'b', 'em'].includes(tag)) {
-      node.style.color = '#ffe4c4c2';
-      node.style.fontFamily = 'Roboto';
+      node.style.color = '#f2d297';
+      node.style.fontWeight = 'normal';
+    } else if (tag == 'img') {
+      node.style.filter = 'brightness(0.8)';
     }
+    node.style.borderColor = '#555';
+    node.style.borderRadius = '5px';
   });
   console.log('Done themeing...');
 }
@@ -86,13 +94,67 @@ CSS = `
 
 {
   background: #191919 !important;
-  color: #ccc;
-  font-family: "Segoe UI";
-  line-height: 1.3;
+  color: #ccc !important;
+  font-family: "Segoe UI" !important;
+  line-height: 28px;
+  border-color: #555;
+  /* font-weight: */
+  /* font-size: 16px; */
 }
 
 a {
   color: #4db2ec;
+  background: #191919 !important;
+  border: 0 !important;
+}
+
+.social {
+  display: none;
+}
+
+.image {
+  filter: brightness(0.7);
+}
+
+input {
+  background: var(--bg-alt);
+  color: var(--fg);
+  border-color: var(--border2);
+}
+
+div#gtx-host,
+.jfk-bubble,
+.jfk-bubble div,
+.jfk-bubble-content-id {
+  background: #ffdead !important;
+  line-height: normal;
+  border-radius: 5px;
+  filter: invert(1);
+}
+
+td,
+tr,
+th,
+tbody,
+table {
+  border-collapse: separate;
+  border-color: #333 !important;
+  border-radius: 2px;
+}
+
+
+hr {
+  border-color: var(--border1) !important;
+  background: var(--border1) !important;
+}
+
+em, bold, strong {
+  color: #F2D297;
+  font-weight: normal;
+}
+
+.td-pb-span8 {
+  width: 100%;
 }
 
 `;
@@ -123,6 +185,28 @@ function copyText(text) {
 }
 
 function generateTheme() {
+  res = [
+    'body',
+    'html',
+    'div',
+    'span',
+    'aside',
+    'p',
+    'header',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'ul',
+    'li',
+    'input',
+    'section',
+    'nav',
+    'table',
+    'tr',
+    'td',
+  ];
+  res = res.concat(definedProperties());
   res = definedProperties();
   res = joinSelectors(res);
   res += CSS;
