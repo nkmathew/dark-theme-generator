@@ -3,6 +3,8 @@ chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
     makePageDark();
   } else if (request.action == 'generate-theme') {
     generateTheme();
+  } else if (request.action.startsWith('brightness')) {
+    document.querySelector('html').style.filter = request.action;
   }
 });
 

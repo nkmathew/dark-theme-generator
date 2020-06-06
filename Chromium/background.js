@@ -18,3 +18,32 @@ chrome.contextMenus.create({
     });
   },
 });
+
+let menuBrightness = chrome.contextMenus.create({
+  title: 'Brightness',
+  contexts: ['browser_action']
+});
+
+chrome.contextMenus.create({
+  id: 'btn-bright50',
+  title: '50%',
+  contexts: ['browser_action'],
+  parentId: menuBrightness,
+  onclick: function () {
+    Chrome.getCurrentTab().then((currTab) => {
+      chrome.tabs.sendMessage(currTab.id, { action: 'brightness(0.5)' });
+    });
+  },
+});
+
+chrome.contextMenus.create({
+  id: 'btn-bright70',
+  title: '70%',
+  contexts: ['browser_action'],
+  parentId: menuBrightness,
+  onclick: function () {
+    Chrome.getCurrentTab().then((currTab) => {
+      chrome.tabs.sendMessage(currTab.id, { action: 'brightness(0.7)' });
+    });
+  },
+});
