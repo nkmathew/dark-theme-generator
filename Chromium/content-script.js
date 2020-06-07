@@ -64,17 +64,20 @@ function makePageDark() {
       node.style.background = '#2A3340';
       node.style.fontSize = '13px';
       node.style.lineHeight = '17px';
+      node.style.color = '#ccc';
       if (node.classList.contains('hljs-number')) {
         node.style.color = '#FFA0A0';
       } else if (node.classList.contains('hljs-attr')) {
         node.style.color = '#ccc';
-        if (/".+"/.test(node.innerText)) {
+        if (/["'].+["']/.test(node.innerText)) {
           node.style.color = '#ff9800';
         }
       } else if (node.classList.contains('hljs-string')) {
         node.style.color = 'khaki';
       } else {
-        node.style.color = '#ccc';
+        if (tag == 'span' && /["'].+["']/.test(node.innerText)) {
+          node.style.color = '#ff9800';
+        }
       }
     }
     node.style.borderColor = '#555';
