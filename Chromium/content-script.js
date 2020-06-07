@@ -49,6 +49,7 @@ function makePageDark() {
       node.style.color = '#4db2ec';
       node.style.boxShadow = 'none';
       node.style.textDecoration = 'none';
+      node.target = '_blank';
     } else if (tag == 'input') {
       node.style.borderRadius = '5px';
     } else if (['strong', 'b', 'em'].includes(tag)) {
