@@ -36,7 +36,9 @@ function makePageDark() {
     let biglink =
       (tag.startsWith('h') && ptag == 'a') ||
       (tag == 'a' && ptag.startsWith('h'));
-    if (tag != 'video') {
+    let isPre = tag == 'pre' || ptag == 'pre' || pptag == 'pre' ||
+      tag == 'code' || ptag == 'code' || pptag == 'code';
+    if (tag != 'video' && !isPre) {
       node.style.backgroundColor = '#191919';
       node.style.color = '#d1d1d1e6';
     }
@@ -57,6 +59,23 @@ function makePageDark() {
       node.style.fontWeight = 'normal';
     } else if (tag == 'img') {
       node.style.filter = 'brightness(0.8)';
+    } else if (isPre) {
+      node.style.fontFamily = 'Consolas';
+      node.style.background = '#2A3340';
+      node.style.fontSize = '13px';
+      node.style.lineHeight = '17px';
+      if (node.classList.contains('hljs-number')) {
+        node.style.color = '#FFA0A0';
+      } else if (node.classList.contains('hljs-attr')) {
+        node.style.color = '#ccc';
+        if (/".+"/.test(node.innerText)) {
+          node.style.color = '#ff9800';
+        }
+      } else if (node.classList.contains('hljs-string')) {
+        node.style.color = 'khaki';
+      } else {
+        node.style.color = '#ccc';
+      }
     }
     node.style.borderColor = '#555';
     node.style.borderRadius = '5px';
