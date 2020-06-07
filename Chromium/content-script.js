@@ -42,11 +42,7 @@ function makePageDark() {
       node.style.backgroundColor = '#191919';
       node.style.color = '#d1d1d1e6';
     }
-    if (tag == 'p') {
-      node.style.fontFamily = '"Segoe UI", Arial, san-serif';
-      node.style.fontSize = '16px';
-      node.style.lineHeight = '28px';
-    } else if (tag == 'a' || biglink || pptag == 'a' || ptag == 'a') {
+    if (tag == 'a' || biglink || pptag == 'a' || ptag == 'a') {
       node.style.fontFamily = 'Arial';
       node.style.color = '#4db2ec';
       node.style.boxShadow = 'none';
@@ -79,6 +75,10 @@ function makePageDark() {
           node.style.color = '#ff9800';
         }
       }
+    } else if (['p', 'li'].includes(tag)) {
+      node.style.fontFamily = '"Segoe UI", Arial, san-serif';
+      node.style.fontSize = '16px';
+      node.style.lineHeight = '28px';
     }
     node.style.borderColor = '#555';
     node.style.borderRadius = '5px';
