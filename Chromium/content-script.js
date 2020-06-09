@@ -23,7 +23,32 @@ let getStyle = function (element, property) {
       ];
 };
 
+let addStylesheet = (rules) => {
+  let style = document.createElement('style');
+  style.type = 'text/css';
+  style.textContent = rules;
+  document.querySelector('head').appendChild(style);
+}
+
+const CSS = `
+
+:root {
+  --image1: url(https://en.wikipedia.org/w/skins/Vector/resources/skins.vector.styles/images/external-link-ltr-icon.png?325de);
+  --image2: url(https://img.icons8.com/nolan/64/external-link.png);
+}
+
+a.x-darkLink:hover {
+  color: #CDDC39 !important;
+  background: var(--image1) !important;
+  padding-right: 14px;
+  background-repeat: no-repeat !important;
+  background-position: top right !important;
+}
+
+`;
+
 function makePageDark() {
+  addStylesheet(CSS);
   [...document.getElementsByTagName('*')].forEach((node) => {
     let tag = node.tagName.toLowerCase() || '';
     let ptag = node.parentNode.tagName;
@@ -36,11 +61,20 @@ function makePageDark() {
     let biglink =
       (tag.startsWith('h') && ptag == 'a') ||
       (tag == 'a' && ptag.startsWith('h'));
-    let isPre = tag == 'pre' || ptag == 'pre' || pptag == 'pre' ||
-      tag == 'code' || ptag == 'code' || pptag == 'code';
-    if (tag != 'video' && !isPre) {
-      node.style.backgroundColor = '#191919';
+    let isPre =
+      tag == 'pre' ||
+      ptag == 'pre' ||
+      pptag == 'pre' ||
+      tag == 'code' ||
+      ptag == 'code' ||
+      pptag == 'code';
+    let isVideo = (tag == 'video') || (ptag == 'video') || (pptag == 'video');
+    if (!isVideo && !isPre) {
+      node.style.background = '#191919';
       node.style.color = '#d1d1d1e6';
+    }
+    if (tag == 'a') {
+      node.classList.add('x-darkLink');
     }
     if (tag == 'a' || biglink || pptag == 'a' || ptag == 'a') {
       node.style.fontFamily = 'Arial';
@@ -126,12 +160,16 @@ ROOT = `
 
 :root {
 
+  --bg-anki      : #2F2F31;
   --bg-card      : #343A40;
+  --bg-imgur     : #141518;
   --bg-pre       : #2A3340;
   --bg-quote     : #2B29298C;
   --blue         : #1A73E8;
   --bold         : #F2D297;
   --bold-1       : #FFE4C4C2;
+  --bold-2       : #cddc39d9;
+  --bold-3       : Khaki;
   --border       : #555555;
   --border-1     : #616161;
   --border-2     : #FFFFFF1A;
@@ -154,13 +192,14 @@ ROOT = `
   --gray-7       : #42424C;
   --gray-alt     : #121212;
   --green        : #228822;
-  --pink         : #FFDEAD;
   --header       : #BDB76B;
   --header-1     : #FF9800DE;
   --hover        : #CDDC39;
   --link         : #4DB2EC;
   --link-1       : #00BCD4;
   --link-2       : #ADD8E6;
+  --pink         : #FFDEAD;
+  --username     : #6A98AF;
 
 }
 
