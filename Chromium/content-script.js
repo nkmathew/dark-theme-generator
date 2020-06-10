@@ -28,7 +28,7 @@ let addStylesheet = (rules) => {
   style.type = 'text/css';
   style.textContent = rules;
   document.querySelector('head').appendChild(style);
-}
+};
 
 const CSS = `
 
@@ -37,8 +37,11 @@ const CSS = `
   --image2: url(https://img.icons8.com/nolan/64/external-link.png);
 }
 
-a.x-darkLink:hover {
+a.x-linkHover:hover {
   color: #CDDC39 !important;
+}
+
+a.x-externalLink:hover {
   background: var(--image1) !important;
   padding-right: 14px;
   background-repeat: no-repeat !important;
@@ -58,23 +61,23 @@ function makePageDark() {
     }
     ptag = ptag ? ptag.toLowerCase() : '';
     pptag = pptag ? pptag.toLowerCase() : '';
+    let parents = [tag, ptag, pptag];
     let biglink =
       (tag.startsWith('h') && ptag == 'a') ||
       (tag == 'a' && ptag.startsWith('h'));
-    let isPre =
-      tag == 'pre' ||
-      ptag == 'pre' ||
-      pptag == 'pre' ||
-      tag == 'code' ||
-      ptag == 'code' ||
-      pptag == 'code';
-    let isVideo = (tag == 'video') || (ptag == 'video') || (pptag == 'video');
-    if (!isVideo && !isPre) {
+    let inCode = parents.includes('code') || parents.includes('pre');
+    let inVideo = parents.includes('video');
+    let inParagraph = parents.includes('p');
+    let inLink = parents.includes('a');
+    if (!inVideo && !inCode) {
       node.style.background = '#191919';
       node.style.color = '#d1d1d1e6';
     }
-    if (tag == 'a') {
-      node.classList.add('x-darkLink');
+    if (inLink) {
+      node.classList.add('x-linkHover');
+      if (inParagraph) {
+        node.classList.add('x-externalLink');
+      }
     }
     if (tag == 'a' || biglink || pptag == 'a' || ptag == 'a') {
       node.style.fontFamily = 'Arial';
@@ -89,7 +92,7 @@ function makePageDark() {
       node.style.fontWeight = 'normal';
     } else if (tag == 'img') {
       node.style.filter = 'brightness(0.8)';
-    } else if (isPre) {
+    } else if (inCode) {
       node.style.fontFamily = 'Consolas';
       node.style.background = '#2A3340';
       node.style.fontSize = '13px';
@@ -304,25 +307,26 @@ function copyText(text) {
 
 function generateTheme() {
   rules = [
-    'body',
-    'html',
-    'div',
-    'span',
     'aside',
-    'p',
-    'header',
+    'body',
+    'div',
     'h1',
     'h2',
     'h3',
     'h4',
-    'ul',
-    'li',
+    'header',
+    'html',
     'input',
-    'section',
+    'li',
     'nav',
+    'p',
+    'section',
+    'span',
     'table',
-    'tr',
     'td',
+    'textarea',
+    'tr',
+    'ul',
   ];
   rules = joinSelectors(rules.concat(definedProperties()));
   rules = `${ROOT}${rules}${CSS}`;
