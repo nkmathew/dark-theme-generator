@@ -5,6 +5,8 @@ chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
     generateTheme();
   } else if (request.action.startsWith('brightness')) {
     document.querySelector('html').style.filter = request.action;
+  } else if (request.action == 'start-zapper') {
+    Zapper();
   }
 });
 
@@ -37,11 +39,11 @@ const CSS = `
   --image2: url(https://img.icons8.com/nolan/64/external-link.png);
 }
 
-a.x-linkHover:hover {
+a.dtg-linkHover:hover {
   color: #CDDC39 !important;
 }
 
-a.x-externalLink:hover {
+a.dtg-externalLink:hover {
   background: var(--image1) !important;
   padding-right: 14px;
   background-repeat: no-repeat !important;
@@ -74,9 +76,9 @@ function makePageDark() {
       node.style.color = '#d1d1d1e6';
     }
     if (inLink) {
-      node.classList.add('x-linkHover');
+      node.classList.add('dtg-linkHover');
       if (inParagraph) {
-        node.classList.add('x-externalLink');
+        node.classList.add('dtg-externalLink');
       }
     }
     if (tag == 'a' || biglink || pptag == 'a' || ptag == 'a') {
@@ -208,7 +210,7 @@ ROOT = `
 
 `;
 
-CSS = `
+DARKCSS = `
 
 {
   background: #191919 !important;
@@ -306,15 +308,19 @@ function copyText(text) {
 }
 
 function generateTheme() {
-  rules = [
+  let rules = [
     'aside',
     'body',
+    'button',
     'div',
     'h1',
     'h2',
     'h3',
     'h4',
+    'h5',
+    'h6',
     'header',
+    'hr',
     'html',
     'input',
     'li',
@@ -329,7 +335,7 @@ function generateTheme() {
     'ul',
   ];
   rules = joinSelectors(rules.concat(definedProperties()));
-  rules = `${ROOT}${rules}${CSS}`;
+  rules = `${ROOT}${rules}${DARKCSS}`;
   console.log(rules);
   copyText(rules);
 }
