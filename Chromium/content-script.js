@@ -71,6 +71,11 @@ button.dtg-copy-button {
   font-weight: bold;
 }
 
+textarea:active,
+textarea:focus {
+  outline: none;
+}
+
 `;
 
 
@@ -116,11 +121,14 @@ function makePageDark() {
     let inVideo = parents.includes('video');
     let inParagraph = parents.includes('p');
     let inLink = parents.includes('a');
-    if (!inVideo && !inCode) {
+    let inQuote = parents.includes('blockquote');
+    if (!inVideo && !inCode && !inQuote) {
       node.style.background = '#191919';
       node.style.color = '#d1d1d1e6';
-    }
-    if (inLink) {
+    } else if (inQuote) {
+      node.style.background = '#2B29298C';
+      node.style.color = 'wheat';
+    } else if (inLink) {
       node.style.background = '#191919';
       node.classList.add('dtg-linkHover');
       if (inParagraph) {
@@ -223,20 +231,23 @@ ROOT = `
 :root {
 
   --bg           : #191919;
-  --bg-1         : #000000;
-  --bg-2         : #121212;
-  --bg-3         : #222222;
-  --bg-3024      : #090300;
-  --bg-4         : #262626;
-  --bg-5         : #2E2E2E;
-  --bg-6         : #23232D;
-  --bg-7         : #42424C;
+  --bg-1a        : #000000;
+  --bg-1b        : #121212;
+  --bg-1c        : #222222;
+  --bg-1d        : #262626;
+  --bg-1e        : #2E2E2E;
+  --bg-1f        : #23232D;
+  --bg-1g        : #42424C;
+  --bg-1h        : #090300;
+  --bg-1i        : #151515;
+  --bg-1j        : #1C1C1C;
   --bg-alt       : #121212;
   --bg-anki      : #2F2F31;
   --bg-card      : #343A40;
   --bg-imgur     : #141518;
   --bg-pre       : #2A3340;
   --bg-pre1      : #24292E;
+  --bg-pre2      : #041D29;
   --bg-quote     : #2B29298C;
   --blue         : #1A73E8;
   --bold         : #F2D297;
@@ -267,6 +278,16 @@ ROOT = `
   --link-1       : #00BCD4;
   --link-2       : #ADD8E6;
   --pink         : #FFDEAD;
+  --pre-comment  : SkyBlue;
+  --pre-constant : #FFA0A0;
+  --pre-funcCall : #FEB43D;
+  --pre-keyword  : Khaki;
+  --pre-keyword1 : #8FEB08;
+  --pre-number   : #FFA0A0;
+  --pre-string   : #FFA0A0;
+  --pre-todo     : OrangeRed;
+  --pre-type     : #82FB98;
+  --pre-var      : #82FB98;
   --username     : #6A98AF;
 
 }
@@ -332,6 +353,7 @@ hr {
   background: var(--border1) !important;
 }
 
+i,
 em,
 bold,
 strong {
@@ -343,30 +365,39 @@ strong {
   width: 100%;
 }
 
+pre,
 pre.prettyprint {
   padding: 10px;
   font-family: monospace;
   background: var(--bg-pre) !important;
   border-color: #555 !important;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 14px !important;
   line-height: normal;
-}
-
-pre .com {
-  color: var(--pre-comment);
-}
-
-pre .kwd {
-  color: var(--pre-keyword);
-}
-
-pre .pln {
   color: var(--fg);
 }
 
+pre .c1,
+pre .com {
+  color: var(--pre-comment) !important;
+}
+
+pre .ow,
+pre .k,
+pre .nb,
+pre .kn,
+pre .kc,
+pre .kwd {
+  color: var(--pre-keyword) !important;
+}
+
+pre .pln {
+  color: var(--fg) !important;
+}
+
+pre .s1,
 pre .str {
-  color: var(--pre-string);
+  color: var(--pre-string) !important;
 }
 
 `;
@@ -386,6 +417,10 @@ function copyText(text, hidden) {
   input.style.height = '100px';
   input.style.zIndex = '99999999';
   input.style.cursor = 'pointer';
+  input.style.background = 'black';
+  input.style.color = 'wheat';
+  input.style.fontSize = '12px';
+  input.style.border = '0';
   input.value = text;
   setTimeout(() => {
     input.select();
