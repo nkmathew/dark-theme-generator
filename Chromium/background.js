@@ -49,6 +49,18 @@ chrome.contextMenus.create({
 });
 
 chrome.contextMenus.create({
+  id: 'btn-bright80',
+  title: '80%',
+  contexts: ['browser_action'],
+  parentId: menuBrightness,
+  onclick: function () {
+    Chrome.getCurrentTab().then((currTab) => {
+      chrome.tabs.sendMessage(currTab.id, { action: 'brightness(0.8)' });
+    });
+  },
+});
+
+chrome.contextMenus.create({
   id: 'btn-zapper',
   title: 'Start Zapper',
   contexts: ['browser_action'],
