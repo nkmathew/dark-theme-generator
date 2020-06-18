@@ -23,10 +23,10 @@ var Zapper = function () {
   }
 
   button.dtg-delete {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    z-index: 99999;
+    z-index: 99999999;
     margin: 10px 6px 6px 6px;
     background: black;
   }
@@ -99,6 +99,7 @@ var Zapper = function () {
   if (!btnZap) {
     btnZap = document.createElement('button');
   }
+  btnZap.id = 'dtg-delete';
   btnZap.classList.add('dtg-delete');
   btnZap.innerText = 'Zap';
   btnZap.style.display = 'block';
