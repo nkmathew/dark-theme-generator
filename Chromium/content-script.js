@@ -15,7 +15,8 @@ chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
 
 KEYWORD  = '#8FEB08';
 STRING   = 'Khaki';
-CONSTANT = 'FFA0A0';
+CONSTANT = '#FFA0A0';
+COMMENT = 'SkyBlue';
 
 const dqs = (selector) => document.querySelector(selector);
 const dqsa = (selector) => document.querySelectorAll(selector);
@@ -87,7 +88,11 @@ function makeCopyButton() {
 
 function hasAnyClass(node, classList) {
   if (typeof classList == 'string') {
-    classList = [classList];
+    if (classList.includes(',')) {
+      classList = classList.split(/,\s*/);
+    } else {
+      classList = [classList];
+    }
   }
   return [...node.classList].filter(item => classList.includes(item)).length;
 }
@@ -142,14 +147,16 @@ function makePageDark() {
       node.style.fontSize = '13px';
       node.style.lineHeight = '17px';
       node.style.color = '#ccc';
-      if (node.classList.contains('hljs-number')) {
+      if (hasAnyClass(node, 'hljs-number, mi')) {
         node.style.color = CONSTANT;
       } else if (node.classList.contains('hljs-attr')) {
         node.style.color = '#ccc';
         if (/["'].+["']/.test(node.innerText)) {
           node.style.color = '#ff9800';
         }
-      } else if (hasAnyClass(node, ['k'])) {
+      } else if (hasAnyClass(node, ['c1'])) {
+        node.style.color = COMMENT;
+      } else if (hasAnyClass(node, 'k, kn')) {
         node.style.color = KEYWORD;
       } else if (node.classList.contains('hljs-string')) {
         node.style.color = STRING;
