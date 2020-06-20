@@ -62,8 +62,8 @@ chrome.contextMenus.create({
 
 chrome.contextMenus.create({
   id: 'btn-zapper',
-  title: 'Start Zapper',
-  contexts: ['browser_action'],
+  title: '→ Start Zapper',
+  contexts: ['all'],
   onclick: function () {
     Chrome.getCurrentTab().then((currTab) => {
       chrome.tabs.sendMessage(currTab.id, { action: 'start-zapper' });
