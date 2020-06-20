@@ -14,9 +14,11 @@ chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
 // }}============================================================================={{
 
 KEYWORD  = '#8FEB08';
-STRING   = 'Khaki';
+STRING   = '#FFA0A0';
 CONSTANT = '#FFA0A0';
-COMMENT = 'SkyBlue';
+PRE_BG   = '#141414';
+PRE_BG1  = '#2A3340';
+COMMENT  = 'SkyBlue';
 
 const dqs = (selector) => document.querySelector(selector);
 const dqsa = (selector) => document.querySelectorAll(selector);
@@ -117,12 +119,16 @@ function makePageDark() {
     let biglink =
       (tag.startsWith('h') && ptag == 'a') ||
       (tag == 'a' && ptag.startsWith('h'));
-    let inCode = parents.includes('code') || parents.includes('pre');
+    let inCode = parents.includes('code');
+    let inPre = parents.includes('pre');
     let inVideo = parents.includes('video');
     let inParagraph = parents.includes('p');
     let inLink = parents.includes('a');
     let inQuote = parents.includes('blockquote');
-    if (!inVideo && !inCode && !inQuote) {
+    node.style.borderColor = '#555';
+    node.style.borderRadius = '5px';
+    node.style.boxShadow = 'none';
+    if (!inVideo && !inCode && !inPre && !inQuote) {
       node.style.background = '#191919';
       node.style.color = '#d1d1d1e6';
     } else if (inQuote) {
@@ -148,10 +154,17 @@ function makePageDark() {
       node.style.fontWeight = 'normal';
     } else if (tag == 'img') {
       node.style.filter = 'brightness(0.8)';
-    } else if (inCode) {
+    } else if (inCode || inPre) {
+      if (inPre) {
+        node.style.background = PRE_BG;
+      } else {
+        node.style.background = PRE_BG1;
+        if (tag == 'code') {
+          node.style.padding = '1px 4px 1px 4px';
+          node.style.borderRadius = '3px';
+        }
+      }
       node.style.fontFamily = 'Consolas';
-      node.style.background = '#2A3340';
-      node.style.backgroundColor = '#2A3340';
       node.style.fontSize = '13px';
       node.style.lineHeight = '17px';
       node.style.color = '#ccc';
@@ -171,7 +184,7 @@ function makePageDark() {
       } else {
         let text = node.innerText;
         if (tag == 'span' && /["'].+["']/.test(text)) {
-          node.style.color = '#ff9800';
+          node.style.color = STRING;
         } else if (tag == 'span' && /^[\d.]*\d$/.test(text)) {
           node.style.color =  CONSTANT;
         }
@@ -183,11 +196,9 @@ function makePageDark() {
     }
     if (tag == 'pre') {
       node.style.position = 'relative';
+      node.style.borderColor = '#58697b';
       node.appendChild(makeCopyButton());
     }
-    node.style.borderColor = '#555';
-    node.style.borderRadius = '5px';
-    node.style.boxShadow = 'none';
   });
 }
 
@@ -248,7 +259,8 @@ ROOT = `
   --bg-pre       : #2A3340;
   --bg-pre1      : #24292E;
   --bg-pre2      : #041D29;
-  --bg-quote     : #2B29298C;
+  --bg-quote     : #232222;
+  --bg-quote1    : #2B29298C;
   --blue         : #1A73E8;
   --bold         : #F2D297;
   --bold-1       : #FFE4C4C2;
@@ -258,6 +270,7 @@ ROOT = `
   --border-1     : #616161;
   --border-2     : #FFFFFF1A;
   --border-3     : #333333;
+  --border-pre   : #58697b;
   --border-quote : #565680;
   --btn-blue     : #378AD3;
   --btn-like     : #EF5466;
@@ -366,11 +379,12 @@ strong {
 }
 
 pre,
+code,
 pre.prettyprint {
   padding: 10px;
   font-family: monospace;
   background: var(--bg-pre) !important;
-  border-color: #555 !important;
+  border-color: #58697b !important;
   border-radius: 5px;
   font-size: 14px !important;
   line-height: normal;
