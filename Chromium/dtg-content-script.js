@@ -104,18 +104,31 @@ function hasAnyClass(node, classList) {
   return [...node.classList].filter(item => classList.includes(item)).length;
 }
 
+function isInternal(link) {
+  link = link || '';
+  let href = window.location.href.split('#')[0];
+  return href == link.split('#')[0];
+}
+
 function makePageDark() {
   addStylesheet(CSS);
   [...document.getElementsByTagName('*')].forEach((node) => {
     let tag = node.tagName.toLowerCase() || '';
     let ptag = node.parentNode.tagName;
     let pptag = null;
-    if (node.parentNode && node.parentNode.parentNode) {
-      pptag = node.parentNode.parentNode.tagName;
+    let ppptag = null;
+    if (node.parentNode) {
+      if (node.parentNode.parentNode) {
+        pptag = node.parentNode.parentNode.tagName;
+        if (node.parentNode.parentNode.parentNode) {
+          ppptag = node.parentNode.parentNode.parentNode.tagName;
+        }
+      }
     }
     ptag = ptag ? ptag.toLowerCase() : '';
     pptag = pptag ? pptag.toLowerCase() : '';
-    let parents = [tag, ptag, pptag];
+    ppptag = ppptag ? ppptag.toLowerCase() : '';
+    let parents = [tag, ptag, pptag, ppptag];
     let biglink =
       (tag.startsWith('h') && ptag == 'a') ||
       (tag == 'a' && ptag.startsWith('h'));
@@ -146,7 +159,9 @@ function makePageDark() {
       node.style.color = '#4db2ec';
       node.style.boxShadow = 'none';
       node.style.textDecoration = 'none';
-      node.target = '_blank';
+      if (!isInternal(node.href)) {
+        node.target = '_blank';
+      }
     } else if (tag == 'input') {
       node.style.borderRadius = '5px';
     } else if (['strong', 'b', 'em'].includes(tag)) {
@@ -196,7 +211,8 @@ function makePageDark() {
     }
     if (tag == 'pre') {
       node.style.position = 'relative';
-      node.style.borderColor = '#58697b';
+      node.style.borderColor = '#555';
+      node.style.padding = '10px';
       node.appendChild(makeCopyButton());
     }
   });
