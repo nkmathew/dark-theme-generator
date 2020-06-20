@@ -5,7 +5,10 @@
   "version": "0.1.0",
 
   "background": {
-    "scripts": ["chrome.js", "background.js"]
+    "scripts": [
+      "dtg-chrome.js",
+      "dtg-background.js"
+    ]
   },
   "content_scripts": [
     {
@@ -13,7 +16,7 @@
       "run_at": "document_end",
       "js": [
         "dtg-zapper.js",
-        "content-script.js"
+        "dtg-content-script.js"
       ]
     }
   ],
