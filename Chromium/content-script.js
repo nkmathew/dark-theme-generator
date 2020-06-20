@@ -378,17 +378,31 @@ strong {
   width: 100%;
 }
 
-pre,
 code,
+pre,
 pre.prettyprint {
-  padding: 10px;
-  font-family: monospace;
+  font-family: monospace !important;
   background: var(--bg-pre) !important;
   border-color: #58697b !important;
   border-radius: 5px;
   font-size: 14px !important;
   line-height: normal;
   color: var(--fg);
+}
+
+code {
+  padding: 1px 4px;
+}
+
+kbd {
+  background: var(--bg-pre) !important;
+  border-color: transparent;
+  color: var(--fg-2);
+}
+
+pre,
+pre.prettyprint {
+  padding: 10px;
 }
 
 pre .c1,
