@@ -13,8 +13,40 @@ chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
 
 // }}============================================================================={{
 
+let RULES = [
+  'aside',
+  'body',
+  'button',
+  'div',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'header',
+  'hr',
+  'html',
+  'input',
+  'li',
+  'nav',
+  'p',
+  'section',
+  'span',
+  'table',
+  'table.docutils td',
+  'table.docutils th',
+  'td',
+  'textarea',
+  'tr',
+  'select',
+  'ul',
+];
+
 KEYWORD  = '#8FEB08';
 STRING   = '#FFA0A0';
+FONT     = '"Segoe UI"';
+FONT1    = 'Arial';
 CONSTANT = '#FFA0A0';
 PRE_BG   = '#141414';
 PRE_BG1  = '#2A3340';
@@ -33,7 +65,7 @@ let getStyle = function (element, property) {
       ];
 };
 
-let addStylesheet = (rules) => {
+let addCustomCSS = (rules) => {
   let style = document.createElement('style');
   style.type = 'text/css';
   style.textContent = rules;
@@ -111,7 +143,7 @@ function isInternal(link) {
 }
 
 function makePageDark() {
-  addStylesheet(CSS);
+  addCustomCSS(CSS);
   [...document.getElementsByTagName('*')].forEach((node) => {
     let tag = node.tagName.toLowerCase() || '';
     let ptag = node.parentNode.tagName;
@@ -147,19 +179,20 @@ function makePageDark() {
     } else if (inQuote) {
       node.style.background = '#2B29298C';
       node.style.color = 'wheat';
-    } else if (inLink) {
+    }
+    if (inLink) {
       node.style.background = '#191919';
       node.classList.add('dtg-linkHover');
       if (inParagraph) {
         node.classList.add('dtg-externalLink');
       }
     }
-    if (tag == 'a' || biglink || pptag == 'a' || ptag == 'a') {
-      node.style.fontFamily = 'Arial';
+    if (inLink || biglink) {
+      node.style.fontFamily = FONT;
       node.style.color = '#4db2ec';
       node.style.boxShadow = 'none';
       node.style.textDecoration = 'none';
-      if (!isInternal(node.href)) {
+      if (tag == 'a' && !isInternal(node.href)) {
         node.target = '_blank';
       }
     } else if (tag == 'input') {
@@ -192,9 +225,11 @@ function makePageDark() {
         }
       } else if (hasAnyClass(node, ['c1'])) {
         node.style.color = COMMENT;
+      } else if (hasAnyClass(node, 'nt')) {
+        node.style.color = '#fb6099';
       } else if (hasAnyClass(node, 'k, kn')) {
         node.style.color = KEYWORD;
-      } else if (node.classList.contains('hljs-string')) {
+      } else if (hasAnyClass(node, 'sd, hljs-string')) {
         node.style.color = STRING;
       } else {
         let text = node.innerText;
@@ -205,7 +240,7 @@ function makePageDark() {
         }
       }
     } else if (['p', 'li'].includes(tag)) {
-      node.style.fontFamily = '"Segoe UI", Arial, san-serif';
+      node.style.fontFamily = FONT;
       node.style.fontSize = '16px';
       node.style.lineHeight = '28px';
     }
@@ -268,6 +303,7 @@ ROOT = `
   --bg-1h        : #090300;
   --bg-1i        : #151515;
   --bg-1j        : #1C1C1C;
+  --bg-1k        : #141414;
   --bg-alt       : #121212;
   --bg-anki      : #2F2F31;
   --bg-card      : #343A40;
@@ -310,6 +346,7 @@ ROOT = `
   --pre-comment  : SkyBlue;
   --pre-constant : #FFA0A0;
   --pre-funcCall : #FEB43D;
+  --pre-operator : var(--fg);
   --pre-keyword  : Khaki;
   --pre-keyword1 : #8FEB08;
   --pre-number   : #FFA0A0;
@@ -326,7 +363,7 @@ ROOT = `
 DARKCSS = `
 
 {
-  background: #191919 !important;
+  background: var(--bg) !important;
   color: #ccc !important;
   font-family: "Segoe UI" !important;
   line-height: 28px;
@@ -336,9 +373,10 @@ DARKCSS = `
   /* font-weight: */
 }
 
+a code span,
 a {
-  color: #4db2ec;
-  background: #191919 !important;
+  color: #4db2ec !important;
+  background: var(--bg) !important;
   border: 0 !important;
 }
 
@@ -396,13 +434,14 @@ strong {
 
 code,
 pre,
+pre span,
 pre.prettyprint {
   font-family: monospace !important;
-  background: var(--bg-pre) !important;
+  background: var(--bg-1k) !important;
   border-color: #58697b !important;
   border-radius: 5px;
-  font-size: 14px !important;
-  line-height: normal;
+  font-size: 13px !important;
+  line-height: 16px;
   color: var(--fg);
 }
 
@@ -429,20 +468,68 @@ pre .com {
 pre .ow,
 pre .k,
 pre .nb,
+pre .bp,
 pre .kn,
 pre .kc,
 pre .kwd {
   color: var(--pre-keyword) !important;
 }
 
+pre .o,
+pre .nc,
+pre .nf,
+pre .fm,
+pre .nn,
 pre .pln {
   color: var(--fg) !important;
 }
 
 pre .s1,
+pre .ss,
+pre .sd,
+pre .mi,
 pre .str {
   color: var(--pre-string) !important;
 }
+
+.python .nu0 {
+  color: var(--pre-number) !important;
+}
+
+pre .nd {
+  color: var(--pre-keyword1) !important;
+}
+
+.python .me1 {
+  color: var(--pre-funcCall) !important;
+}
+
+.python .sy0 {
+  color: var(--pre-operator) !important;
+}
+
+.rst-content dl:not(.docutils) tt,
+.rst-content dl:not(.docutils) tt,
+.rst-content dl:not(.docutils) code {
+  font-weight: normal;
+  color: wheat !important;
+}
+
+.admonition.note,
+.admonition.attention,
+.admonition.warning,
+.admonition.warning p,
+.admonition.attention p,
+.admonition.note p {
+  background: #212b30 !important;
+}
+
+.admonition.warning .first,
+.admonition.attention .first,
+.admonition.note .first {
+  background: #13181b !important;
+}
+
 
 `;
 
@@ -478,33 +565,7 @@ function copyText(text, hidden) {
 }
 
 function generateTheme() {
-  let rules = [
-    'aside',
-    'body',
-    'button',
-    'div',
-    'h1',
-    'h2',
-    'h3',
-    'h4',
-    'h5',
-    'h6',
-    'header',
-    'hr',
-    'html',
-    'input',
-    'li',
-    'nav',
-    'p',
-    'section',
-    'span',
-    'table',
-    'td',
-    'textarea',
-    'tr',
-    'ul',
-  ];
-  rules = joinSelectors(rules.concat(definedProperties()));
+  let rules = joinSelectors(RULES.concat(definedProperties()));
   rules = `${ROOT}${rules}${DARKCSS}`;
   console.log(rules);
   copyText(rules);
