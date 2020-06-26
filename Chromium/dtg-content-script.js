@@ -14,10 +14,14 @@ chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
 // }}============================================================================={{
 
 let RULES = [
+  '*',
   'aside',
   'body',
   'button',
+  'dd',
   'div',
+  'dl',
+  'dt',
   'h1',
   'h2',
   'h3',
@@ -32,6 +36,7 @@ let RULES = [
   'nav',
   'p',
   'section',
+  'select',
   'span',
   'table',
   'table.docutils td',
@@ -39,18 +44,19 @@ let RULES = [
   'td',
   'textarea',
   'tr',
-  'select',
   'ul',
 ];
 
-KEYWORD  = '#8FEB08';
-STRING   = '#FFA0A0';
+BOLD     = '#f2d297';
+COMMENT  = 'SkyBlue';
+CONSTANT = '#FFA0A0';
 FONT     = '"Segoe UI"';
 FONT1    = 'Arial';
-CONSTANT = '#FFA0A0';
+KEYWORD  = '#8FEB08';
+KEYWORD1 = '#f92672';
 PRE_BG   = '#141414';
 PRE_BG1  = '#2A3340';
-COMMENT  = 'SkyBlue';
+STRING   = '#FFA0A0';
 
 const dqs = (selector) => document.querySelector(selector);
 const dqsa = (selector) => document.querySelectorAll(selector);
@@ -72,7 +78,7 @@ let addCustomCSS = (rules) => {
   document.querySelector('head').appendChild(style);
 };
 
-const CSS = `
+const STYLES = `
 
 :root {
   --image1: url(https://en.wikipedia.org/w/skins/Vector/resources/skins.vector.styles/images/external-link-ltr-icon.png?325de);
@@ -110,6 +116,18 @@ textarea:focus {
   outline: none;
 }
 
+blockquote {
+  background: var(--bg-quote);
+  border-color: var(--border-quote) !important;
+  padding: 5px !important;
+  color: var(--fg) !important;
+}
+
+::selection {
+  color: #cddc39;
+  background: #C30517;
+}
+
 `;
 
 
@@ -143,7 +161,7 @@ function isInternal(link) {
 }
 
 function makePageDark() {
-  addCustomCSS(CSS);
+  addCustomCSS(STYLES);
   [...document.getElementsByTagName('*')].forEach((node) => {
     let tag = node.tagName.toLowerCase() || '';
     let ptag = node.parentNode.tagName;
@@ -197,8 +215,12 @@ function makePageDark() {
       }
     } else if (tag == 'input') {
       node.style.borderRadius = '5px';
-    } else if (['strong', 'b', 'em'].includes(tag)) {
-      node.style.color = '#f2d297';
+    } else if (/h\d/.test(tag)) {
+      node.style.color = BOLD;
+      node.style.fontWeight = '300';
+      node.style.fontFamily = 'Roboto';
+    } else if (/(strong|b|em)/.test(tag)) {
+      node.style.color = BOLD;
       node.style.fontWeight = 'normal';
     } else if (tag == 'img') {
       node.style.filter = 'brightness(0.8)';
@@ -229,6 +251,8 @@ function makePageDark() {
         node.style.color = '#fb6099';
       } else if (hasAnyClass(node, 'k, kn')) {
         node.style.color = KEYWORD;
+      } else if (hasAnyClass(node, 'nd')) {
+        node.style.color = KEYWORD1;
       } else if (hasAnyClass(node, 'sd, hljs-string')) {
         node.style.color = STRING;
       } else {
@@ -243,6 +267,7 @@ function makePageDark() {
       node.style.fontFamily = FONT;
       node.style.fontSize = '16px';
       node.style.lineHeight = '28px';
+      node.style.maxWidth = '750px';
     }
     if (tag == 'pre') {
       node.style.position = 'relative';
@@ -293,67 +318,84 @@ ROOT = `
 :root {
 
   --bg           : #191919;
-  --bg-1a        : #000000;
-  --bg-1b        : #121212;
-  --bg-1c        : #222222;
-  --bg-1d        : #262626;
-  --bg-1e        : #2E2E2E;
-  --bg-1f        : #23232D;
-  --bg-1g        : #42424C;
-  --bg-1h        : #090300;
-  --bg-1i        : #151515;
-  --bg-1j        : #1C1C1C;
-  --bg-1k        : #141414;
   --bg-alt       : #121212;
   --bg-anki      : #2F2F31;
   --bg-card      : #343A40;
   --bg-imgur     : #141518;
+  --bg-note      : #2e3b42;
   --bg-pre       : #2A3340;
   --bg-pre1      : #24292E;
   --bg-pre2      : #041D29;
   --bg-quote     : #232222;
   --bg-quote1    : #2B29298C;
+  --bg1a         : #000000;
+  --bg1b         : #121212;
+  --bg1c         : #222222;
+  --bg1d         : #262626;
+  --bg1e         : #2E2E2E;
+  --bg1f         : #23232D;
+  --bg1g         : #42424C;
+  --bg1h         : #090300;
+  --bg1i         : #151515;
+  --bg1j         : #1C1C1C;
+  --bg1k         : #141414;
   --blue         : #1A73E8;
   --bold         : #F2D297;
-  --bold-1       : #FFE4C4C2;
-  --bold-2       : #cddc39d9;
-  --bold-3       : Khaki;
+  --bold1        : #FFE4C4C2;
+  --bold2        : #cddc39d9;
+  --bold3        : Khaki;
   --border       : #555555;
-  --border-1     : #616161;
-  --border-2     : #FFFFFF1A;
-  --border-3     : #333333;
   --border-pre   : #58697b;
   --border-quote : #565680;
+  --border1      : #616161;
+  --border2      : #FFFFFF1A;
+  --border3      : #333333;
   --btn-blue     : #378AD3;
+  --btn-green    : #28A745;
   --btn-like     : #EF5466;
+  --btn-purple   : #6F42C1;
+  --btn-red      : #CB2431;
   --btn-shadow   : 0 0 5px #0F0F0F;
   --btn-signup   : #009966;
   --fg           : #CCCCCC;
-  --fg-1         : #FFFFFF;
-  --fg-2         : #F5DEB3;
-  --fg-3         : #B3B3B3;
-  --fg-4         : #d3d3d3;
-  --fg-5         : #ffffffbf;
   --fg-input     : #FFFFFFE0;
+  --fg-title     : darkkhaki;
+  --fg1          : #FFFFFF;
+  --fg2          : #F5DEB3;
+  --fg3          : #B3B3B3;
+  --fg4          : #d3d3d3;
+  --fg5          : #ffffffbf;
+  --gold         : #524B38;
+  --gold1        : #464236;
   --green        : #228822;
   --header       : #BDB76B;
-  --header-1     : #FF9800DE;
+  --header1      : #FF9800DE;
   --hover        : #CDDC39;
   --link         : #4DB2EC;
-  --link-1       : #00BCD4;
-  --link-2       : #ADD8E6;
+  --link1        : #00BCD4;
+  --link2        : #ADD8E6;
+  --link3        : #3CA4FF;
   --pink         : #FFDEAD;
   --pre-comment  : SkyBlue;
+  --pre-comment1 : #848d95;
   --pre-constant : #FFA0A0;
   --pre-funcCall : #FEB43D;
-  --pre-operator : var(--fg);
   --pre-keyword  : Khaki;
   --pre-keyword1 : #8FEB08;
+  --pre-keyword2 : #f92672;
+  --pre-keyword3 : #66d9ef;
+  --pre-keyword4 : #F7D335;
+  --pre-keyword5 : #ff7700;
+  --pre-linenr   : #dbdb00;
   --pre-number   : #FFA0A0;
   --pre-string   : #FFA0A0;
+  --pre-string1  : #fb6099;
+  --pre-string1  : #fded02;
   --pre-todo     : OrangeRed;
   --pre-type     : #82FB98;
   --pre-var      : #82FB98;
+  --selection    : #C30517;
+  --sepia        : #221E17;
   --username     : #6A98AF;
 
 }
@@ -424,7 +466,7 @@ i,
 em,
 bold,
 strong {
-  color: #F2D297;
+  color: var(--bold);
   font-weight: normal;
 }
 
@@ -437,9 +479,9 @@ pre,
 pre span,
 pre.prettyprint {
   font-family: monospace !important;
-  background: var(--bg-1k) !important;
+  background: var(--bg1k) !important;
   border-color: #58697b !important;
-  border-radius: 5px;
+  border-radius: 7px;
   font-size: 13px !important;
   line-height: 16px;
   color: var(--fg);
@@ -530,6 +572,15 @@ pre .nd {
   background: #13181b !important;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  padding-bottom: 10px;
+  line-height: normal;
+}
+
+::selection {
+  color: white;
+  background: #C30517;
+}
 
 `;
 
