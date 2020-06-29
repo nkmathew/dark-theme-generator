@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
 // }}============================================================================={{
 
 let RULES = [
-  '*',
+  '/* * */',
   'aside',
   'body',
   'button',
@@ -128,6 +128,10 @@ blockquote {
   background: #C30517;
 }
 
+a:visited {
+  color: #f6809a !important;
+}
+
 `;
 
 
@@ -145,11 +149,7 @@ function makeCopyButton() {
 
 function hasAnyClass(node, classList) {
   if (typeof classList == 'string') {
-    if (classList.includes(',')) {
-      classList = classList.split(/,\s*/);
-    } else {
-      classList = [classList];
-    }
+    classList = classList.replace(/[,.]/g, ' ').split(/\s+/);
   }
   return [...node.classList].filter(item => classList.includes(item)).length;
 }
@@ -184,6 +184,7 @@ function makePageDark() {
       (tag == 'a' && ptag.startsWith('h'));
     let inCode = parents.includes('code');
     let inPre = parents.includes('pre');
+    let inCodeWithChildren = [pptag, ppptag].includes('code');
     let inVideo = parents.includes('video');
     let inParagraph = parents.includes('p');
     let inLink = parents.includes('a');
@@ -225,7 +226,7 @@ function makePageDark() {
     } else if (tag == 'img') {
       node.style.filter = 'brightness(0.8)';
     } else if (inCode || inPre) {
-      if (inPre) {
+      if (inPre || inCodeWithChildren) {
         node.style.background = PRE_BG;
       } else {
         node.style.background = PRE_BG1;
@@ -240,20 +241,20 @@ function makePageDark() {
       node.style.color = '#ccc';
       if (hasAnyClass(node, 'hljs-number, mi')) {
         node.style.color = CONSTANT;
-      } else if (node.classList.contains('hljs-attr')) {
+      } else if (hasAnyClass(node, 'hljs-attr')) {
         node.style.color = '#ccc';
         if (/["'].+["']/.test(node.innerText)) {
           node.style.color = '#ff9800';
         }
-      } else if (hasAnyClass(node, ['c1'])) {
+      } else if (hasAnyClass(node, 'c1')) {
         node.style.color = COMMENT;
       } else if (hasAnyClass(node, 'nt')) {
         node.style.color = '#fb6099';
-      } else if (hasAnyClass(node, 'k, kn')) {
+      } else if (hasAnyClass(node, 'k,kn')) {
         node.style.color = KEYWORD;
-      } else if (hasAnyClass(node, 'nd')) {
+      } else if (hasAnyClass(node, 'nd,ow,k,nb,bp,kn,kc')) {
         node.style.color = KEYWORD1;
-      } else if (hasAnyClass(node, 'sd, hljs-string')) {
+      } else if (hasAnyClass(node, 'sd,hljs-string')) {
         node.style.color = STRING;
       } else {
         let text = node.innerText;
@@ -268,6 +269,7 @@ function makePageDark() {
       node.style.fontSize = '16px';
       node.style.lineHeight = '28px';
       node.style.maxWidth = '750px';
+      node.style.fontWeight = 'normal';
     }
     if (tag == 'pre') {
       node.style.position = 'relative';
@@ -416,8 +418,9 @@ DARKCSS = `
 }
 
 a code span,
+a span,
 a {
-  color: #4db2ec !important;
+  color: var(--link) !important;
   background: var(--bg) !important;
   border: 0 !important;
 }
@@ -464,9 +467,10 @@ hr {
 
 i,
 em,
+b,
 bold,
 strong {
-  color: var(--bold);
+  color: var(--bold) !important;
   font-weight: normal;
 }
 
@@ -522,11 +526,13 @@ pre .nc,
 pre .nf,
 pre .fm,
 pre .nn,
+pre .n,
 pre .pln {
   color: var(--fg) !important;
 }
 
 pre .s1,
+pre .s2,
 pre .ss,
 pre .sd,
 pre .mi,
@@ -546,6 +552,7 @@ pre .nd {
   color: var(--pre-funcCall) !important;
 }
 
+pre .p,
 .python .sy0 {
   color: var(--pre-operator) !important;
 }
@@ -575,11 +582,25 @@ pre .nd {
 h1, h2, h3, h4, h5, h6 {
   padding-bottom: 10px;
   line-height: normal;
+  color: #f2d297 !important;
+  font-weight: 300;
 }
 
 ::selection {
-  color: white;
+  color: #cddc39;
   background: #C30517;
+}
+
+blockquote {
+  background: var(--bg-quote);
+  border-color: var(--border-quote) !important;
+  /* border-left: 5px solid var(--border-quote) !important; */
+  padding: 10px !important;
+  color: var(--fg) !important;
+}
+
+a:visited {
+  color: #f6809a !important;
 }
 
 `;
