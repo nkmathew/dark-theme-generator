@@ -1,6 +1,12 @@
 chrome.browserAction.onClicked.addListener(function (tab) {
   Chrome.getCurrentTab().then((currTab) => {
-    chrome.tabs.sendMessage(currTab.id, { action: 'go-dark' });
+    chrome.tabs.sendMessage(currTab.id, { action: 'go-dark' }, (response) => {
+      if (chrome.runtime.lastError && !response) {
+        chrome.tabs.executeScript(currTab.id, {
+          code: 'location.reload();'
+        });
+      }
+    });
   });
 });
 
