@@ -1,6 +1,7 @@
 chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
   if (request.action == 'go-dark') {
     makePageDark();
+    sendResponse('Done');
   } else if (request.action == 'generate-theme') {
     generateTheme();
   } else if (request.action.startsWith('brightness')) {
@@ -14,7 +15,6 @@ chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
 // }}============================================================================={{
 
 let RULES = [
-  '/* * */',
   'aside',
   'body',
   'button',
@@ -78,7 +78,7 @@ let addCustomCSS = (rules) => {
   document.querySelector('head').appendChild(style);
 };
 
-const STYLES = `
+const INJECTED_STYLES = `
 
 :root {
   --image1: url(https://en.wikipedia.org/w/skins/Vector/resources/skins.vector.styles/images/external-link-ltr-icon.png?325de);
@@ -132,6 +132,16 @@ a:visited {
   color: #f6809a !important;
 }
 
+div#gtx-host,
+.jfk-bubble,
+.jfk-bubble div,
+.jfk-bubble-content-id {
+  background: #ffdead !important;
+  line-height: normal;
+  border-radius: 5px;
+  filter: invert(1);
+}
+
 `;
 
 
@@ -161,7 +171,7 @@ function isInternal(link) {
 }
 
 function makePageDark() {
-  addCustomCSS(STYLES);
+  addCustomCSS(INJECTED_STYLES);
   [...document.getElementsByTagName('*')].forEach((node) => {
     let tag = node.tagName.toLowerCase() || '';
     let ptag = node.parentNode.tagName;
