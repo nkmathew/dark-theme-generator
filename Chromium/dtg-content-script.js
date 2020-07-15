@@ -22,6 +22,7 @@ let RULES = [
   'div',
   'dl',
   'dt',
+  'footer',
   'h1',
   'h2',
   'h3',
@@ -47,16 +48,16 @@ let RULES = [
   'ul',
 ];
 
-BOLD     = '#f2d297';
-COMMENT  = 'SkyBlue';
+BOLD = '#f2d297';
+COMMENT = 'SkyBlue';
 CONSTANT = '#FFA0A0';
-FONT     = '"Segoe UI"';
-FONT1    = 'Arial';
-KEYWORD  = '#8FEB08';
+FONT = '"Segoe UI"';
+FONT1 = 'Arial';
+KEYWORD = '#8FEB08';
 KEYWORD1 = '#f92672';
-PRE_BG   = '#141414';
-PRE_BG1  = '#2A3340';
-STRING   = '#FFA0A0';
+PRE_BG = '#141414';
+PRE_BG1 = '#2A3340';
+STRING = '#FFA0A0';
 
 const dqs = (selector) => document.querySelector(selector);
 const dqsa = (selector) => document.querySelectorAll(selector);
@@ -142,8 +143,16 @@ div#gtx-host,
   filter: invert(1);
 }
 
-`;
+select:focus,
+input:focus {
+  border-color: #009688 !important;
+}
 
+.hljs {
+  background: #141414 !important;
+}
+
+`;
 
 function makeCopyButton() {
   let button = document.createElement('button');
@@ -161,7 +170,7 @@ function hasAnyClass(node, classList) {
   if (typeof classList == 'string') {
     classList = classList.replace(/[,.]/g, ' ').split(/\s+/);
   }
-  return [...node.classList].filter(item => classList.includes(item)).length;
+  return [...node.classList].filter((item) => classList.includes(item)).length;
 }
 
 function isInternal(link) {
@@ -271,7 +280,7 @@ function makePageDark() {
         if (tag == 'span' && /["'].+["']/.test(text)) {
           node.style.color = STRING;
         } else if (tag == 'span' && /^[\d.]*\d$/.test(text)) {
-          node.style.color =  CONSTANT;
+          node.style.color = CONSTANT;
         }
       }
     } else if (['p', 'li'].includes(tag)) {
@@ -388,6 +397,7 @@ ROOT = `
   --link2        : #ADD8E6;
   --link3        : #3CA4FF;
   --pink         : #FFDEAD;
+  --pink1        : #f6809a;
   --pre-comment  : SkyBlue;
   --pre-comment1 : #848d95;
   --pre-constant : #FFA0A0;
@@ -402,7 +412,7 @@ ROOT = `
   --pre-number   : #FFA0A0;
   --pre-string   : #FFA0A0;
   --pre-string1  : #fb6099;
-  --pre-string1  : #fded02;
+  --pre-string2  : #fded02;
   --pre-todo     : OrangeRed;
   --pre-type     : #82FB98;
   --pre-var      : #82FB98;
@@ -550,6 +560,10 @@ pre .str {
   color: var(--pre-string) !important;
 }
 
+.token.string {
+  color: var(--pre-string1) !important;
+}
+
 .python .nu0 {
   color: var(--pre-number) !important;
 }
@@ -611,6 +625,11 @@ blockquote {
 
 a:visited {
   color: #f6809a !important;
+}
+
+select:focus,
+input:focus {
+  border-color: #009688 !important;
 }
 
 `;
