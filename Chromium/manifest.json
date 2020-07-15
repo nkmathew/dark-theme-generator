@@ -5,10 +5,7 @@
   "version": "0.1.0",
 
   "background": {
-    "scripts": [
-      "dtg-chrome.js",
-      "dtg-background.js"
-    ]
+    "scripts": ["dtg-chrome.js", "dtg-background.js"]
   },
   "content_scripts": [
     {
@@ -16,6 +13,8 @@
       "run_at": "document_end",
       "js": [
         "dtg-zapper.js",
+        "clipboard.min.js",
+        "dtg-copy-button.js",
         "dtg-content-script.js"
       ]
     }

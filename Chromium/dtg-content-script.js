@@ -1,6 +1,8 @@
 chrome.runtime.onMessage.addListener(function (request, _, sendResponse) {
   if (request.action == 'go-dark') {
     makePageDark();
+    addCustomCSS(BUTTON_CSS);
+    addCopyTrigger();
     sendResponse('Done');
   } else if (request.action == 'generate-theme') {
     generateTheme();
@@ -154,7 +156,7 @@ input:focus {
 
 `;
 
-function makeCopyButton() {
+function makeCopyButton1() {
   let button = document.createElement('button');
   button.classList.add('dtg-copy-button');
   button.innerText = 'Copy';
