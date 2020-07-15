@@ -254,9 +254,18 @@ function makePageDark() {
           node.style.borderRadius = '3px';
         }
       }
+      if (tag == 'pre') {
+        node.style.marginTop = '1em';
+      } else {
+        node.style.marginTop = '0px';
+      }
+      if (tag == 'span') {
+        node.style.lineHeight = '20px';
+      } else {
+        node.style.lineHeight = '17px';
+      }
       node.style.fontFamily = 'Consolas';
       node.style.fontSize = '13px';
-      node.style.lineHeight = '17px';
       node.style.color = '#ccc';
       if (hasAnyClass(node, 'hljs-number, mi')) {
         node.style.color = CONSTANT;
