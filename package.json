@@ -1,0 +1,27 @@
+{
+  "name": "dark-theme-generator",
+  "version": "0.1.0",
+  "description": "Dark theme generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/nkmathew/dark-theme-generator.git"
+  },
+  "keywords": [
+    "chrome"
+  ],
+  "author": "nkmathew",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/nkmathew/dark-theme-generator/issues"
+  },
+  "homepage": "https://gitlab.com/nkmathew/dark-theme-generator#readme",
+  "devDependencies": {
+    "husky": "^4.2.5",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1"
+  }
+}
