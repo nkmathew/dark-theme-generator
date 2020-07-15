@@ -1,9 +1,13 @@
 chrome.browserAction.onClicked.addListener(function (tab) {
   Chrome.getCurrentTab().then((currTab) => {
+    if (currTab.url.includes('youtube.com/')) {
+      chrome.tabs.sendMessage(currTab.id, { action: 'brightness(0.8)' });
+      return;
+    }
     chrome.tabs.sendMessage(currTab.id, { action: 'go-dark' }, (response) => {
       if (chrome.runtime.lastError && !response) {
         chrome.tabs.executeScript(currTab.id, {
-          code: 'location.reload();'
+          code: 'location.reload();',
         });
       }
     });
@@ -27,7 +31,7 @@ chrome.contextMenus.create({
 
 let menuBrightness = chrome.contextMenus.create({
   title: 'Brightness',
-  contexts: ['browser_action']
+  contexts: ['browser_action'],
 });
 
 chrome.contextMenus.create({
