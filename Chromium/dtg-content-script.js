@@ -81,7 +81,34 @@ let addCustomCSS = (rules) => {
   document.querySelector('head').appendChild(style);
 };
 
-const INJECTED_STYLES = `
+const CSS_COMMON = `
+
+select:focus,
+input:focus {
+  border-color: #009688 !important;
+}
+
+a:visited {
+  color: #f6809a !important;
+}
+
+div#gtx-host,
+.jfk-bubble,
+.jfk-bubble div,
+.jfk-bubble-content-id {
+  background: #ffdead !important;
+  line-height: normal;
+  border-radius: 5px;
+  filter: invert(1);
+}
+
+.hljs {
+  background: #141414 !important;
+}
+
+`;
+
+const CSS_INJECTED = `
 
 :root {
   --image1: url(https://en.wikipedia.org/w/skins/Vector/resources/skins.vector.styles/images/external-link-ltr-icon.png?325de);
@@ -131,29 +158,6 @@ blockquote {
   background: #C30517;
 }
 
-a:visited {
-  color: #f6809a !important;
-}
-
-div#gtx-host,
-.jfk-bubble,
-.jfk-bubble div,
-.jfk-bubble-content-id {
-  background: #ffdead !important;
-  line-height: normal;
-  border-radius: 5px;
-  filter: invert(1);
-}
-
-select:focus,
-input:focus {
-  border-color: #009688 !important;
-}
-
-.hljs {
-  background: #141414 !important;
-}
-
 `;
 
 function makeCopyButton1() {
@@ -182,7 +186,7 @@ function isInternal(link) {
 }
 
 function makePageDark() {
-  addCustomCSS(INJECTED_STYLES);
+  addCustomCSS(`${CSS_INJECTED}${CSS_COMMON}`);
   [...document.getElementsByTagName('*')].forEach((node) => {
     let tag = node.tagName.toLowerCase() || '';
     let ptag = node.parentNode.tagName;
@@ -435,7 +439,7 @@ ROOT = `
 
 `;
 
-DARKCSS = `
+CSS_DARK = `
 
 {
   background: var(--bg) !important;
@@ -468,16 +472,6 @@ input {
   background: var(--bg-alt);
   color: var(--fg);
   border-color: var(--border2);
-}
-
-div#gtx-host,
-.jfk-bubble,
-.jfk-bubble div,
-.jfk-bubble-content-id {
-  background: #ffdead !important;
-  line-height: normal;
-  border-radius: 5px;
-  filter: invert(1);
 }
 
 td,
@@ -634,15 +628,6 @@ blockquote {
   color: var(--fg) !important;
 }
 
-a:visited {
-  color: #f6809a !important;
-}
-
-select:focus,
-input:focus {
-  border-color: #009688 !important;
-}
-
 `;
 
 function copyText(text, hidden) {
@@ -678,7 +663,7 @@ function copyText(text, hidden) {
 
 function generateTheme() {
   let rules = joinSelectors(RULES.concat(definedProperties()));
-  rules = `${ROOT}${rules}${DARKCSS}`;
+  rules = `${ROOT}${rules}${CSS_DARK}${CSS_COMMON}`;
   console.log(rules);
   copyText(rules);
 }
