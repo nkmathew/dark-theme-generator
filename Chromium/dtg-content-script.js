@@ -58,7 +58,8 @@ FONT1 = 'Arial';
 KEYWORD = '#8FEB08';
 KEYWORD1 = '#f92672';
 PRE_BG = '#141414';
-PRE_BG1 = '#2A3340';
+PRE_BG1 = '#03213A';
+PRE_BG2 = '#2A3340';
 STRING = '#FFA0A0';
 
 const dqs = (selector) => document.querySelector(selector);
@@ -242,7 +243,7 @@ function makePageDark() {
     } else if (tag == 'input') {
       node.style.borderRadius = '5px';
     } else if (/h\d/.test(tag)) {
-      node.style.color = BOLD;
+      node.style.color = 'darkkhaki';
       node.style.fontWeight = '300';
       node.style.fontFamily = 'Roboto';
     } else if (/(strong|b|em)/.test(tag)) {
