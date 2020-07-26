@@ -439,7 +439,7 @@ ROOT = `
 
 `;
 
-CSS_DARK = `
+CSS_GENERATED = `
 
 {
   background: var(--bg) !important;
@@ -611,7 +611,7 @@ pre .p,
 h1, h2, h3, h4, h5, h6 {
   padding-bottom: 10px;
   line-height: normal;
-  color: #f2d297 !important;
+  color: darkkhaki !important;
   font-weight: 300;
 }
 
@@ -626,7 +626,14 @@ blockquote {
   /* border-left: 5px solid var(--border-quote) !important; */
   padding: 10px !important;
   color: var(--fg) !important;
+  line-height: 16px;
 }
+
+blockquote p {
+  background: var(--bg-quote) !important;
+  line-height: 20px;
+}
+
 
 `;
 
@@ -663,7 +670,7 @@ function copyText(text, hidden) {
 
 function generateTheme() {
   let rules = joinSelectors(RULES.concat(definedProperties()));
-  rules = `${ROOT}${rules}${CSS_DARK}${CSS_COMMON}`;
+  rules = `${ROOT}${rules}${CSS_GENERATED}${CSS_COMMON}`;
   console.log(rules);
   copyText(rules);
 }
