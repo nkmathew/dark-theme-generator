@@ -362,6 +362,7 @@ ROOT = `
   --bg-pre       : #2A3340;
   --bg-pre1      : #24292E;
   --bg-pre2      : #041D29;
+  --bg-pre3      : #03213A;
   --bg-quote     : #232222;
   --bg-quote1    : #2B29298C;
   --bg1a         : #000000;
@@ -516,8 +517,9 @@ pre.prettyprint {
   color: var(--fg);
 }
 
-code {
+p code {
   padding: 1px 4px;
+  background: var(--bg-pre3);
 }
 
 kbd {
