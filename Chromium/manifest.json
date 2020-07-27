@@ -12,10 +12,14 @@
       "matches": ["<all_urls>"],
       "run_at": "document_end",
       "js": [
-        "dtg-zapper.js",
         "clipboard.min.js",
+        "spin.js",
+        "dtg-zapper.js",
         "dtg-copy-button.js",
         "dtg-content-script.js"
+      ],
+      "css": [
+        "spin.css"
       ]
     }
   ],
@@ -27,6 +31,9 @@
   "browser_action": {
     "default_icon": "images/icon1.png"
   },
+  "web_accessible_resources": [
+    "spin.css"
+  ],
   "permissions": [
     "notifications",
     "contextMenus",
