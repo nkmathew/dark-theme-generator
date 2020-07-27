@@ -25,12 +25,6 @@ let RULES = [
   'dl',
   'dt',
   'footer',
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
   'header',
   'hr',
   'html',
@@ -61,6 +55,8 @@ PRE_BG = '#141414';
 PRE_BG1 = '#03213A';
 PRE_BG2 = '#2A3340';
 STRING = '#FFA0A0';
+
+SPINNER_COLOR = 'red';
 
 const dqs = (selector) => document.querySelector(selector);
 const dqsa = (selector) => document.querySelectorAll(selector);
@@ -108,7 +104,7 @@ div#gtx-host,
 }
 
 .spinner div {
-  background: #C1E510 !important;
+  background: ${SPINNER_COLOR} !important;
 }
 
 `;
@@ -194,7 +190,7 @@ var SPINNER = {
   animation: 'spinner-line-fade-default',
   className: 'spinner',
   color: [
-    '#C1E510',
+    SPINNER_COLOR,
     // 'SkyBlue',
     // '#FFA0A0',
     // '#2A3340',
@@ -350,9 +346,7 @@ function makePageDark() {
   setTimeout(() => {
     let allNodes = [...document.getElementsByTagName('*')];
     allNodes.forEach(styleNode);
-    setTimeout(() => {
-      spinner.stop();
-    }, 500);
+    spinner.stop();
   }, 500);
 }
 
