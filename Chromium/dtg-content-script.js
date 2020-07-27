@@ -183,7 +183,7 @@ function hasAnyClass(node, classList) {
 function isInternal(link) {
   link = link || '';
   let href = window.location.href.split('#')[0];
-  return href == link.split('#')[0];
+  return href == link.split('#')[0] || link.startsWith('javascript:');
 }
 
 var SPINNER = {
