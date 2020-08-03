@@ -107,6 +107,11 @@ div#gtx-host,
   background: ${SPINNER_COLOR} !important;
 }
 
+/* Medium.com clap sidebar */
+div[data-test-id="post-sidebar"] {
+  display: none;
+}
+
 `;
 
 const CSS_INJECTED = `
@@ -296,7 +301,7 @@ function styleNode(node) {
     } else {
       node.style.lineHeight = '17px';
     }
-    node.style.fontFamily = 'Consolas';
+    node.style.fontFamily = 'Consolas, "Ubuntu Mono", Inconsolata';
     node.style.fontSize = '13px';
     node.style.color = '#ccc';
     if (hasAnyClass(node, 'hljs-number, mi')) {
