@@ -47,8 +47,8 @@ let RULES = [
 BOLD = '#f2d297';
 COMMENT = 'SkyBlue';
 CONSTANT = '#FFA0A0';
-FONT = '"Segoe UI"';
-FONT1 = 'Arial';
+FONT_TEXT = '"Segoe UI", Arial, Ubuntu';
+FONT_MONO = 'Consolas, "Ubuntu Mono", Inconsolata';
 KEYWORD = '#8FEB08';
 KEYWORD1 = '#f92672';
 PRE_BG = '#141414';
@@ -263,7 +263,7 @@ function styleNode(node) {
     }
   }
   if (inLink || biglink) {
-    node.style.fontFamily = FONT;
+    node.style.fontFamily = FONT_TEXT;
     node.style.color = '#4db2ec';
     node.style.boxShadow = 'none';
     node.style.textDecoration = 'none';
@@ -301,7 +301,7 @@ function styleNode(node) {
     } else {
       node.style.lineHeight = '17px';
     }
-    node.style.fontFamily = 'Consolas, "Ubuntu Mono", Inconsolata';
+    node.style.fontFamily = FONT_MONO;
     node.style.fontSize = '13px';
     node.style.color = '#ccc';
     if (hasAnyClass(node, 'hljs-number, mi')) {
@@ -330,7 +330,7 @@ function styleNode(node) {
       }
     }
   } else if (['p', 'li'].includes(tag)) {
-    node.style.fontFamily = FONT;
+    node.style.fontFamily = FONT_TEXT;
     node.style.fontSize = '16px';
     node.style.lineHeight = '28px';
     node.style.maxWidth = '750px';
@@ -486,7 +486,7 @@ CSS_GENERATED = `
 {
   background: var(--bg) !important;
   color: #ccc !important;
-  font-family: "Segoe UI" !important;
+  font-family: "Segoe UI", Arial !important;
   line-height: 28px;
   border-color: #555 !important;
   border-radius: 3px !important;
@@ -549,7 +549,7 @@ code,
 pre,
 pre span,
 pre.prettyprint {
-  font-family: monospace !important;
+  font-family: ${FONT_MONO} !important;
   background: var(--bg1k) !important;
   border-color: #58697b !important;
   border-radius: 7px;
