@@ -44,10 +44,35 @@ let RULES = [
   'ul',
 ];
 
+FONT_TITLE = [
+  '-apple-system',
+  'BlinkMacSystemFont',
+  'Roboto',
+  '"Segoe UI"',
+  '"Trebuchet MS"',
+  '"Helvetica Neue"',
+  'Arial',
+  'system-ui',
+  'Ubuntu',
+  'sans-serif',
+].join();
+
+FONT_TEXT = [
+  '-apple-system',
+  'BlinkMacSystemFont',
+  '"Segoe UI"',
+  '"Trebuchet MS"',
+  'Roboto',
+  '"Helvetica Neue"',
+  'Arial',
+  'system-ui',
+  'Ubuntu',
+  'sans-serif',
+].join();
+
 BOLD = '#f2d297';
 COMMENT = 'SkyBlue';
 CONSTANT = '#FFA0A0';
-FONT_TEXT = '"Segoe UI", Arial, Ubuntu';
 FONT_MONO = 'Consolas, "Ubuntu Mono", Inconsolata';
 KEYWORD = '#8FEB08';
 KEYWORD1 = '#f92672';
@@ -111,6 +136,31 @@ div#gtx-host,
 div[data-test-id="post-sidebar"] {
   display: none;
 }
+
+h1 {
+  font-size: 27px;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+h3 {
+  font-size: 23px;
+}
+
+h4 {
+  font-size: 21px;
+}
+
+h5 {
+  font-size: 19px;
+}
+
+h6 {
+  font-size: 17px;
+}
+
 
 `;
 
@@ -262,8 +312,8 @@ function styleNode(node) {
       node.classList.add('dtg-externalLink');
     }
   }
+  node.style.fontFamily = FONT_TEXT;
   if (inLink || biglink) {
-    node.style.fontFamily = FONT_TEXT;
     node.style.color = '#4db2ec';
     node.style.boxShadow = 'none';
     node.style.textDecoration = 'none';
@@ -275,7 +325,15 @@ function styleNode(node) {
   } else if (/h\d/.test(tag)) {
     node.style.color = 'darkkhaki';
     node.style.fontWeight = '300';
-    node.style.fontFamily = 'Roboto';
+    node.style.fontFamily = FONT_TITLE;
+    node.style.fontSize = {
+      'h1': '27px',
+      'h2': '25px',
+      'h3': '23px',
+      'h4': '21px',
+      'h5': '19px',
+      'h6': '17px',
+    }[tag];
   } else if (/(strong|b|em)/.test(tag)) {
     node.style.color = BOLD;
     node.style.fontWeight = 'normal';
@@ -486,7 +544,7 @@ CSS_GENERATED = `
 {
   background: var(--bg) !important;
   color: #ccc !important;
-  font-family: "Segoe UI", Arial !important;
+  font-family: ${FONT_TEXT} !important;
   line-height: 28px;
   border-color: #555 !important;
   border-radius: 3px !important;
