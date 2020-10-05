@@ -161,6 +161,11 @@ h6 {
   font-size: 17px;
 }
 
+select {
+  background: var(--bg-imgur) !important;
+  border-radius: 3px;
+  border-color: #333;
+}
 
 `;
 
@@ -569,9 +574,12 @@ a {
 }
 
 input {
-  background: var(--bg-alt);
-  color: var(--fg);
-  border-color: var(--border2);
+  background: var(--bg-alt) !important;
+  color: var(--fg) !important;
+  border-color: var(--border2) !important;
+  border-style: solid;
+  padding: 0px 6px;
+  border-radius: 5px !important;
 }
 
 td,
