@@ -167,6 +167,10 @@ select {
   border-color: #333;
 }
 
+messageext {
+  display: none;
+}
+
 `;
 
 const CSS_INJECTED = `
