@@ -1,7 +1,8 @@
-### Deezer Next Button
+### Dark Theme Generator
 
-Plays the next track on Deezer when you click on the action button
+Can turn any website to a dark theme and additionally generate a dark themed Stylus
+stylesheet
 
-Enjoy!
+### Screenshot
 
----
+![](https://image.prntscr.com/image/xn6UR_bpTj_n9oTfDYy6XQ.png)
