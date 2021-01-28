@@ -171,6 +171,10 @@ messageext {
   display: none;
 }
 
+ul {
+  list-style-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAYAAAALpr0TAAAAUklEQVQYV2N48eJFGggzIAFsYiDBu0D8H4iNoXxBdDGYQmMgfgfFSrjEkK0CmXAGZCIuMeJMRXOTCxZ3usBM2w0VgPsSmxhIcCYII/EF0cVIAgBALbD3dOcVXAAAAABJRU5ErkJggg==');
+}
+
 `;
 
 const CSS_INJECTED = `
