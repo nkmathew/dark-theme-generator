@@ -175,6 +175,13 @@ ul {
   list-style-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAYAAAALpr0TAAAAUklEQVQYV2N48eJFGggzIAFsYiDBu0D8H4iNoXxBdDGYQmMgfgfFSrjEkK0CmXAGZCIuMeJMRXOTCxZ3usBM2w0VgPsSmxhIcCYII/EF0cVIAgBALbD3dOcVXAAAAABJRU5ErkJggg==');
 }
 
+li {
+  line-height: 20px !important;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin: 0px;
+}
+
 `;
 
 const CSS_INJECTED = `
