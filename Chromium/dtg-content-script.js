@@ -182,6 +182,10 @@ li {
   margin: 0px;
 }
 
+nav ul {
+  list-style-image: none;
+}
+
 `;
 
 const CSS_INJECTED = `
