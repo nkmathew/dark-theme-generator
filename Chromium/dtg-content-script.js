@@ -322,6 +322,7 @@ function styleNode(node) {
   node.style.borderColor = '#555';
   node.style.borderRadius = '5px';
   node.style.boxShadow = 'none';
+  node.style.textShadow = 'none';
   if (!inVideo && !inCode && !inPre && !inQuote) {
     node.style.background = '#191919';
     node.style.color = '#d1d1d1e6';
