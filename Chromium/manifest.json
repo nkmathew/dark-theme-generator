@@ -18,9 +18,7 @@
         "dtg-copy-button.js",
         "dtg-content-script.js"
       ],
-      "css": [
-        "spin.css"
-      ]
+      "css": ["spin.css"]
     }
   ],
   "icons": {
@@ -31,9 +29,7 @@
   "browser_action": {
     "default_icon": "images/icon1.png"
   },
-  "web_accessible_resources": [
-    "spin.css"
-  ],
+  "web_accessible_resources": ["spin.css"],
   "permissions": [
     "notifications",
     "contextMenus",

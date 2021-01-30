@@ -352,12 +352,12 @@ function styleNode(node) {
     node.style.fontWeight = '300';
     node.style.fontFamily = FONT_TITLE;
     node.style.fontSize = {
-      'h1': '27px',
-      'h2': '25px',
-      'h3': '23px',
-      'h4': '21px',
-      'h5': '19px',
-      'h6': '17px',
+      h1: '27px',
+      h2: '25px',
+      h3: '23px',
+      h4: '21px',
+      h5: '19px',
+      h6: '17px',
     }[tag];
   } else if (/(strong|b|em)/.test(tag)) {
     node.style.color = BOLD;

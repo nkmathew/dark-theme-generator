@@ -1,5 +1,4 @@
 var Zapper = function () {
-
   var Stack = [];
 
   addStylesheet = (rules) => {
@@ -122,5 +121,4 @@ var Zapper = function () {
     stopZapper();
     event.preventDefault();
   });
-
 };
