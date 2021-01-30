@@ -312,7 +312,7 @@ function styleNode(node) {
   let biglink =
     (tag.startsWith('h') && ptag == 'a') ||
     (tag == 'a' && ptag.startsWith('h'));
-  let inCode = parents.includes('code');
+  let inCode = parents.includes('code') || parents.includes('tt');
   let inPre = parents.includes('pre');
   let inCodeWithChildren = [pptag, ppptag].includes('code');
   let inVideo = parents.includes('video');
@@ -369,8 +369,9 @@ function styleNode(node) {
       node.style.background = PRE_BG;
     } else {
       node.style.background = PRE_BG1;
-      if (tag == 'code') {
-        node.style.padding = '1px 4px 1px 4px';
+      if (/code|tt/.test(tag)) {
+        node.style.padding = '1px 6px';
+        node.style.display = 'inline-block';
         node.style.borderRadius = '3px';
       }
     }
@@ -631,6 +632,7 @@ strong {
   width: 100%;
 }
 
+tt,
 code,
 pre,
 pre span,
@@ -644,8 +646,9 @@ pre.prettyprint {
   color: var(--fg);
 }
 
+tt,
 p code {
-  padding: 1px 4px;
+  padding: 1px 6px;
   background: var(--bg-pre3);
 }
 
